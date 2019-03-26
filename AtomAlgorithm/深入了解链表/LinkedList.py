@@ -91,7 +91,7 @@ def length(head):
 # 单链表类的实现
 
 llist1 = LNode(1)
-p = llist1
+p = llist1  # 利用p作为头节点
 
 for i in range(2, 11):
     p.next = LNode(i)
@@ -101,3 +101,89 @@ p = llist1
 while p is not None:
     print(p.val)
     p = p.next
+
+
+
+
+
+# 输出表
+# 放在创建链表类里面
+def printall(self):
+    p = self.head
+    while p is not None:
+        print(p.val, end='')
+        if p.next is not None:
+            print(', ', end='')
+        p = p.next
+    print('')
+
+
+
+
+
+
+# 在单链表对象增加一个尾节点引用域
+# 可以采用头节点不存储数据，而是存储下一个节点的引用和尾节点的引用
+
+
+
+
+
+# 循环单链表（简称循环链表），其最后一个节点的next域不用None，而是指向表的第一个节点
+#
+
+class LCList:  # 循环单链表类
+    def __init__(self):
+        self._rear = None
+
+    def is_empty(self):
+        return self._rear is None
+
+    def prepend(self, elem):  # 前端插入
+        p = LNode(elem)
+        if self._rear is None:
+            p.next = p  # 建立一个节点的环
+            self._rear = p
+        else:
+            p.next = self._rear.next
+            self._rear = self._rear.next
+
+    def append(self, elem):  # 尾端插入
+        self.prepend(elem)
+        self._rear = self._rear.next
+
+    def pop(self):  # 前端弹出
+        if self._rear is None:
+            raise LinkedListUnderflow("in pop of CLList")
+        p = self._rear.next
+        if self._rear is p:
+            self._rear = None
+        else:
+            self._rear.next = p.next
+        return p.elem
+
+    def printall(self):  # 输出表元素
+        if self.is_empty():
+            return
+        p = self._rear.next
+        while True:
+            print(p.elem)
+            if p is self._rear:
+                break
+            p = p.next
+
+
+
+
+
+# 双链表
+
+# 节点操作
+p.next.next = p.next
+p.next.prev = p.prev
+
+# 双链表类
+class DLnode(LNode):
+    def __init__(self, val, prev=None, next_=None):
+        LNode.__init__(self, val, next_)
+        self.prev = prev
