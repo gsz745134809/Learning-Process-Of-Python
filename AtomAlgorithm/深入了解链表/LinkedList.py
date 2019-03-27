@@ -182,8 +182,168 @@ class LCList:  # 循环单链表类
 p.next.next = p.next
 p.next.prev = p.prev
 
-# 双链表类
-class DLnode(LNode):
+# 双链表节点
+class DLNode(LNode):
     def __init__(self, val, prev=None, next_=None):
         LNode.__init__(self, val, next_)
         self.prev = prev
+
+
+
+# 双链表类
+class DLList(LList1):
+    # 双链表类
+    def __init__(self):
+        LList1.__init__(self)
+
+    def prepend(self, val):
+        p = DLNode(val, None, self._head)
+        if self._head is None:  # 空表
+            self._rear = p
+        else:  # 非空表，设置next引用
+            p.next.prev = p
+        self._head = p
+
+    def pop(self):
+        if self._head is None:
+            raise LinkedListUnderflow("in pop of DLList")
+        e = self._head.val
+        self._head = self._head.next
+        if self._head is not None:  # _head空时不需要做任何事
+            self._head.prev = None
+        return e
+
+    def pop_last(self):
+        if self._head is None:
+            raise LinkedListUnderflow("in pop_last of DLList")
+        e = self._rear.val
+        self._rear = self._rear.prev
+        if self._rear is None:
+            self._head = None  # 设置 _head 保证 is_empty 正确工作
+        else:
+            self._rear.next = None
+        return e
+
+
+
+
+
+# 单链表反转
+# 从一个表的首端不断取下结点，将其加入另一个表的首端，就形成了一个反转的过程
+# 取下和加入操作都是O(1)
+# 总：O(n)
+
+def rev(head):  # 传入的参数为一个链表的表头的引用
+    prev = None
+    while head is not None:  # 遍历链表
+        cur = head  # 实际用q， head指向表头
+        head = cur.next  # 摘下原来的首结点
+        cur.next = prev
+        prev = cur  # 将刚摘下的结点加入p引用的结点序列
+    head = prev  # 反转后的结点序列已经做好，重置表头链接
+
+def reverseList(head):
+        cur, prev = head, None
+        while cur:
+            cur.next, prev, cur = prev, cur, cur.next
+        return prev
+
+# 参考：https://blog.csdn.net/weixin_39561100/article/details/79818949
+
+
+
+
+
+# 单链表排序
+
+# 先看列表的插入排序
+def list_sort(lst):
+	for i in range(1, len(lst)):  # 开始时片段[0:1]已经排序
+		x = lst[i]
+		j = i
+		while j > 0 and lst[j-1] > x:
+			lst[j] = lst[j-1]
+			j -= 1
+		lst[j] = x
+
+
+# 单链表的排序
+# 扫描指针 crt 指向当前考虑的结点，对一个大循环中每次处理一个表元素并前进一步
+# 对每个元素的处理分两步完成：
+# 第一步从头开始扫过小于或等于x的表元素，直至确定了已排序段里的特定位置，找到了第一个大于x的表元素
+# 第二步是做一系列“倒换”，把x放入正确位置，并将其他表元素后移。
+def sort1(self):
+	if self._head is None:
+		return
+	crt = self._head.next  # 从首结点之后开始处理
+	while crt is not None:
+		x = crt.val
+		p = self._head
+		while p is not crt and p.val <= x:  # 跳过最小元素
+			p = p.next
+		while p is not crt:  # 倒换大元素，完成元素插入的工作
+			y = p.val
+			p.val = x
+			x = y
+			p = p.next
+		crt.val = x  # 回填最后一个元素
+		crt = crt.next
+
+
+def sort(self):
+	p = self._head
+	if p is None or p.next is None:
+		return
+
+	rem = p.next
+	p.next = None
+	while rem is not None:
+		p = self._head
+		q = None
+		while p is not None and p.val <= rem.val:
+			q = p
+			p = p.next
+		if q is None:
+			self._head = rem
+		else:
+			q.next = rem
+		q = rem
+		rem = rem.next
+		q.next = p
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
