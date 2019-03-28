@@ -10,3 +10,16 @@ def majorityElement(nums):
 
 nums = [1,2,3,3,3]
 print(majorityElement(nums))
+
+
+
+
+class Solution:
+    def majorityElement(self, nums):
+        """
+        :type nums: List[int]
+        :rtype: int
+        """
+        nums.sort()
+        n = int(len(nums)/2)
+        return nums[n]
