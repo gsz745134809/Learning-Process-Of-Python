@@ -24,3 +24,18 @@ class Solution:
                 sums = temp
             max_sum = max(max_sum, sums)
         return max_sum
+
+
+
+# 时间最少
+
+class Solution:
+    def maxSubArray(self, nums: 'List[int]') -> 'int':
+        if len(nums) == 1:
+            return nums[0]
+        
+        cur_max = end_max = nums[0]
+        for i in range(1, len(nums)):        
+            end_max = end_max + nums[i] if end_max > 0 else nums[i]
+            cur_max = max(end_max, cur_max)
+        return cur_max
